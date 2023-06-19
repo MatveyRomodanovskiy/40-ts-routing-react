@@ -1,8 +1,12 @@
-import React, {useEffect, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import "../css_modules/contact.module.css";
-import {base_url, period_month} from "../utils/constants";
+import {base_url, characters, defaultHero, period_month} from "../utils/constants";
+import {redirect, useParams} from "react-router-dom";
+import {SWContex} from "../utils/context";
 
 const Contact = () => {
+    const {heroId = defaultHero} = useParams();
+    const {changeHero} = useContext(SWContex);
     const [planets, setPlanets] = useState(['wait...']);
 
     const fillPlanets = async (url: string) => {
@@ -18,15 +22,17 @@ const Contact = () => {
     }
 
     useEffect(() => {
-        console.log('Contact mounted');
-        const planets = JSON.parse(localStorage.getItem('planets')!);
-        if (planets && ((Date.now() - planets.time) < period_month)) {
-            setPlanets(planets.payload);
-        } else {
-            fillPlanets(`${base_url}/v1/planets`);
-        }
-        return () => console.log('Contact unmounted');
-    }, [])
+        if(heroId && characters[heroId]) {
+            changeHero(heroId);
+            const planets = JSON.parse(localStorage.getItem('planets')!);
+            if (planets && ((Date.now() - planets.time) < period_month)) {
+                setPlanets(planets.payload);
+            } else {
+                fillPlanets(`${base_url}/v1/planets`);
+            }
+             }
+        else {redirect('*')}
+    }, [heroId])
 
     return (
         <div>

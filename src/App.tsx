@@ -3,16 +3,23 @@ import './App.css';
 import Header from "./components/Header";
 import Main from "./components/Main";
 import Footer from "./components/Footer";
-import {navItems} from "./utils/constants";
+import {defaultHero, navItems} from "./utils/constants";
+import {Characters} from "./utils/types";
+import {SWContex} from "./utils/context";
 
 
 const App = () => {
 
+    const[hero, setHero] = useState(defaultHero);
     return (
         <div className="container-fluid">
-
+        <SWContex.Provider value={{
+            hero,
+            changeHero: setHero
+        }}>
                 <Header/>
-                <Main/>
+                 <Main/>
+                    </SWContex.Provider>
                 <Footer/>
 
         </div>

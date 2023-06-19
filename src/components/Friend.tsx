@@ -1,11 +1,14 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import style from '../css_modules/bottomRound.module.css'
+import {characters, navItems} from "../utils/constants";
+import {Link} from "react-router-dom";
 
 interface Props {
-    picture: string,
+    friend: string,
     pos: number
 }
-const Friend = ({picture, pos}: Props) => {
+
+const Friend = ({friend, pos}: Props) => {
     let styles = "col-4 p-1";
     if (pos === 7) {
         styles = `${styles} ${style.bottomLeft}`;
@@ -14,7 +17,9 @@ const Friend = ({picture, pos}: Props) => {
         styles = `${styles} ${style.bottomRight}`;
     }
     return (
-        <img className={styles} src={picture} alt="Friend"/>
+        <Link className={styles} to={`/${navItems[0].route}/${friend}`}>
+            <img className={'w-100'} src={characters[friend].img} alt="Friend"/>
+        </Link>
     );
 };
 
